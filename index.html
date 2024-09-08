@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Just a maxwell :3"> 
+    <title>The maxwell</title> 
+    <link rel="icon" href="icon.ico" type="image/x-icon"> 
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+            background-color: #333; 
+            color: #fff; 
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Press Start 2P', cursive;
+            user-select: none;
+        }
+        #maxwell {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            display: none;
+            pointer-events: none;
+        }
+        button {
+            position: absolute;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #555;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 10;
+        }
+        button:hover {
+            background-color: #777;
+        }
+        .playlist {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #555;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        .playlist .track-name {
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .arrow {
+            font-family: 'Press Start 2P', cursive;
+        }
+    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+</head>
+<body>
+    <button id="start">Запустить</button>
+    <img id="maxwell" src="https://media.tenor.com/El89itaAWsIAAAAi/maxwell.gif" alt="Maxwell">
+    <audio id="music" preload="auto" loop style="display: none;"></audio>
+    <audio id="meow" src="meow.mp3" preload="auto" style="display: none;"></audio>
+    <div class="playlist">
+        <div class="track-name" id="track-name">Cat - Maxwell</div>
+        <div class="arrow pixel">></div>
+    </div>
+
+    <script>
+        const music = document.getElementById('music');
+        const meow = document.getElementById('meow');
+        const trackName = document.getElementById('track-name');
+        const playlist = document.querySelector('.playlist');
+        const arrow = document.querySelector('.arrow');
+        const maxwell = document.getElementById('maxwell');
+
+        const tracks = [
+            { src: 'maxwell.m4a', name: 'Cat - Maxwell' },
+            { src: 'cats.mp3', name: 'Cats! (sped up)' },
+            { src: 'penis.m4a', name: 'The penis (Eek!)' },
+            { src: 'ending.m4a', name: 'Super Mario World - Ending' }
+        ];
+        let currentTrackIndex = 0;
+
+        function updateTrack() {
+            music.src = tracks[currentTrackIndex].src;
+            trackName.textContent = tracks[currentTrackIndex].name;
+            music.play();
+        }
+
+        document.getElementById('start').addEventListener('click', () => {
+            maxwell.style.display = 'block';
+            playlist.style.display = 'flex';
+            music.style.display = 'block';
+            updateTrack();
+
+            document.getElementById('start').style.display = 'none';
+        });
+
+        arrow.addEventListener('click', () => {
+            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+            updateTrack();
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'U' || event.key === 'I' || event.key === 'Control' || event.key === 'F12') {
+                event.preventDefault();
+                window.location.reload();
+            }
+        });
+
+        document.addEventListener('contextmenu', (event) => {
+            event.preventDefault(); 
+            window.location.reload(); 
+        });
+
+ 
+        let dx = 2; 
+        let dy = 2; 
+
+        function moveMaxwell() {
+            const rect = maxwell.getBoundingClientRect();
+            let x = rect.left + dx;
+            let y = rect.top + dy;
+
+
+            if (x <= 0 || x + rect.width >= window.innerWidth) {
+                dx *= -1;
+            }
+            if (y <= 0 || y + rect.height >= window.innerHeight) {
+                dy *= -1;
+            }
+
+            maxwell.style.left = `${x}px`;
+            maxwell.style.top = `${y}px`;
+        }
+        setInterval(moveMaxwell, 10); 
+
+
+        function playRandomMeow() {
+            const randomInterval = Math.floor(Math.random() * 10000) + 5000; 
+            setTimeout(() => {
+                meow.play();
+                playRandomMeow();
+            }, randomInterval);
+        }
+        playRandomMeow();
+    </script>
+</body>
+</html>
